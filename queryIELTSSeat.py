@@ -1,10 +1,11 @@
 import requests as requests
+import json
 import time
 
 def scheduledQuery():
     url = "https://ielts.neea.cn/myHome/52943457/queryTestSeats"
     params = {
-        'queryMonths':'2020-05,2020-06,2020-07', 
+        'queryMonths':'2020-05,2020-06', 
         'queryProvinces':'30,31,32,33',
         'neeaAppId':'',
         'productId':'IELTSPBT',
@@ -20,7 +21,7 @@ def scheduledQuery():
         '1laYpfWboXsu443T':'41TGN0X5RZLCrq3qiVaOb8TTnWIKb9r.FsSsfym5Wp90aNntG53nW2sfutLnfN4pQVE.818aGmk.pLw__KFxIjoaLuHKplttR1nG1oqMgBbycoVJlhZtThni7T9Pf2JntZFaYPpaJMZa8_pYjvAT9PEqW3hoteRiE1rli94QTg6Sd64WCzLZu5gxtPxPNiBu.PHmgudn08_PqfjnZBeik8goHnBCV0_U_LT_B4OmIy_wGlEl0oNujIQBbYHfMzFONkLFPvKaTDFv2y60NNbezcZpEoZqj97V0tnZufEdJVonK4ZuZmRyG4HbhMyJZ6wVyLML5TFYfWas.SHyjfwWKVP2fUOY_ROkpTi6eCxHVST3uHycVO.wacfY.G5vpjK7zeS0', 
         '_ga':'GA1.3.48660123.1585020538', 
         '_gid':'GA1.3.2052652049.1585020538', 
-        'JSESSIONID':'YOUROWNSESSION',
+        'JSESSIONID':'sss',
         'locale':'zh_CN'}
     count = 0
     schoolKey = "centerNameCn"
@@ -29,6 +30,10 @@ def scheduledQuery():
     while True:
         print("Ready to query seats in ShangHai")
         r = requests.get(url = url, params = params, cookies = c) 
+        if r.text.find(schoolKey) == -1:
+            print(r.text)
+            time.sleep(10)
+            continue
         data = r.json()
         flag = False
         for i in data:
@@ -41,7 +46,7 @@ def scheduledQuery():
         if flag == False:
             print("这次查询还是没位置！")
         print("===========================Query count: " + count.__str__()+ " ========================")
-        time.sleep(60)
+        time.sleep(10)
 
 if __name__ == "__main__":
     scheduledQuery()
